@@ -68,7 +68,7 @@ akka.actor.provider = "akka.remote.RemoteActorRefProvider"
 
 **Client**: same transport, `port = 0`.
 
-### Current (layered HOCON)
+### layered HOCON
 
 **Shared** — `modules/ingestion-common/src/main/resources/application-base.conf`:
 
@@ -80,16 +80,6 @@ akka.actor.provider = "akka.remote.RemoteActorRefProvider"
 **Client** — includes base + `canonical.port = 0` and optional `ingestion.endpoint.host` / `ingestion.endpoint.port`
 
 Config is merged on the classpath from module dependencies (no file-path loading).
-
----
-
-### Classpath / config pitfalls (fixed)
-
-| Issue | Previous behavior | Current behavior |
-|-------|-------------------|----------------|
-| Config in fat JAR | `getResource(...).getFile` breaks inside JARs | `ConfigFactory.load` uses classpath stream |
-| Duplicate Akka config | Two unrelated `application.conf` trees | Shared `application-base.conf` + small overrides |
-| Version drift | Endpoint and client could diverge | `project/Dependencies.scala` pins one Akka version |
 
 ## Further reading
 
